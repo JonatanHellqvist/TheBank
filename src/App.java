@@ -27,13 +27,13 @@ public class App {
                 }
                     switch (menuOption){
                         case 1:
-                            accountBalance(balance);
+                            Account.accountBalance(balance);
                             break;
                         case 2:
                             System.out.println("Enter the ammount you wish to deposit: ");
                             if (input.hasNextDouble()) {
                                 money = input.nextDouble();
-                                balance = deposit(money, balance);
+                                balance = Account.deposit(money, balance);
                                 break;
                             }  else {
                                 WrongInput.deposit(input);
@@ -47,7 +47,7 @@ public class App {
                                     System.out.println("\nInnsufficient funds to do that transfer, please try again.");
                                     break;
                                 } else {
-                                    balance = withdraw(money, balance);
+                                    balance = Account.withdraw(money, balance);
                                     break;
                                 }
                             } else {
@@ -99,20 +99,20 @@ public class App {
 
     }
     //fixa class för account grejor
-    
-    public static void accountBalance(double bankBalance) {
-        System.out.println("\nYour current balance is: " + bankBalance);
-        
-    }
+    public class Account {
+        public static void accountBalance(double bankBalance) {
+            System.out.println("\nYour current balance is: " + bankBalance);
+        }
     //fixa in hela deposit i en metod om det går
-    public static double deposit(double bankMoney,double bankBalance) {
-        bankBalance = bankMoney+bankBalance;
-        return(bankBalance);
-    }
+        public static double deposit(double bankMoney,double bankBalance) {
+            bankBalance = bankMoney+bankBalance;
+            return(bankBalance);
+        }
     //fixa in hela withdraw i en metod om det går
-    public static double withdraw(double bankMoney,double bankBalance) {
-        bankBalance = bankBalance - bankMoney;
-        return(bankBalance);
+        public static double withdraw(double bankMoney,double bankBalance) {
+            bankBalance = bankBalance - bankMoney;
+            return(bankBalance);
+        }
     }
     public static boolean exit(boolean run) {
         System.out.println("Exiting the bank. Welcome back!");
