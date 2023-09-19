@@ -3,120 +3,88 @@ import java.util.Scanner;
 public class App {
     public static void main(String[] args) throws Exception {
         
-        
         Scanner input = new Scanner(System.in);
         System.out.println("Welcome to the Bank");
         double balance = 0;
-        double money = 0;
         boolean run = true;
-        int menuOption = 0;
+        int menuChoice = 0;
         
-
-            while (run) {
-                System.out.println("\nPlease select one of the alternatives:\n\n" +  
-                    "1 - Saldo \n" + 
-                    "2 - Deposit\n" + 
-                    "3 - Withdraw\n" + 
-                    "4 - Exit");
-                if (input.hasNextInt()) {
-                        menuOption = input.nextInt();
-                } else {
-                    WrongInput.menu(input);
-                    continue;
-                    
-                }
-                    switch (menuOption){
-                        case 1:
-                            Account.accountBalance(balance);
-                            break;
-                        case 2:
-                            System.out.println("Enter the ammount you wish to deposit: ");
-                            if (input.hasNextDouble()) {
-                                money = input.nextDouble();
-                                balance = Account.deposit(money, balance);
-                                break;
-                            }  else {
-                                WrongInput.deposit(input);
-                                break;
-                            }
-                        case 3:
-                            System.out.println("Enter the ammount you wish to withdraw: ");
-                            if (input.hasNextDouble()) {
-                                money = input.nextDouble();
-                                 if (money > balance) {
-                                    System.out.println("\nInnsufficient funds to do that transfer, please try again.");
-                                    break;
-                                } else {
-                                    balance = Account.withdraw(money, balance);
-                                    break;
-                                }
-                            } else {
-                                WrongInput.withdraw(input);
-                                break;
-                            }
-                               
-                        case 4:
-                            run = exit(run);
-                            
-                            
-
-                        /*default: {
-                            System.out.println("Wrong input!");
-                            input.next();
-                            break;
-                        }*/
-                    
-                    }         
-
-            }input.close();  
-        /* Skapa en meny med 4 val
-
-        1 - Se saldo
-        * Se hur mycket pengar som finns på kontot
-
-        2 - Sätt in pengar
-        * Fråga hur mycket pengar som ska sättas in
-
-        3 - Ta ut pengar
-        * Fråga hur mycket pengar som ska tas ut.
-        
-        - inte låta saldot bli mindre än 0, isf skriv ut att det inte finns tillräckligt med pengar.
-
-        4 - Avsluta
-        *Avsluta programmet
-        */ 
-
-
-        //Hantera felaktiga val i menyn med en varning och visa menyn igen.
-
-        //Egna klasser för alla val i menyn
-
-        //DRY (Don't repeat yourself) ska användas i koden på ett bra sätt.
-
-
-
-
-
+        while (run) {
+                
+            menuChoice = Menu.menuOption(input);
+            switch (menuChoice){
+                case 1:
+                    Account.accountBalance(balance);
+                    break;
+                case 2:
+                    balance = Account.deposit(input, balance);
+                    break;
+                case 3:
+                    balance = Account.withdraw(input, balance);
+                    break;
+                case 4:
+                    run = exit(run);
+            }         
+        }input.close();  
     }
-    //fixa class för account grejor
+    public class Menu {
+
+        public static int menuOption(Scanner input) {
+           System.out.println("\nPlease select one of the alternatives:\n\n" +  
+                "1 - Saldo \n" + 
+                "2 - Deposit\n" + 
+                "3 - Withdraw\n" + 
+                "4 - Exit");
+            int menuChoice = 0;
+            if (input.hasNextInt()) {
+                menuChoice = input.nextInt();
+            } else {
+                WrongInput.menu(input);
+            }
+            return menuChoice;
+        }
+    }
     public class Account {
+        
         public static void accountBalance(double bankBalance) {
             System.out.println("\nYour current balance is: " + bankBalance);
         }
-    //fixa in hela deposit i en metod om det går
-        public static double deposit(double bankMoney,double bankBalance) {
+        //fixa så man inte kan sätta in minus
+        public static double deposit(Scanner input, double balance) {
+            System.out.println("Enter the ammount you wish to deposit: ");
+            if (input.hasNextDouble()) {
+                double money = input.nextDouble();
+                balance = depositTransfer(money, balance);
+            } else {
+                WrongInput.deposit(input);
+            }
+            return balance;
+        }
+        //fixa så man inte kan ta ut minus
+        public static double withdraw(Scanner input, double balance) {
+            System.out.println("Enter the ammount you wish to withdraw: ");
+            if (input.hasNextDouble()) {
+                double bankMoney = input.nextDouble();
+                if (bankMoney > balance) {
+                    System.out.println("\nInnsufficient funds to do that transfer, please try again.");
+                } else {
+                    balance = withdrawTransfer(bankMoney, balance);
+                }
+            } else {
+                WrongInput.withdraw(input);
+            }
+            return balance;
+        }
+
+        public static double depositTransfer(double bankMoney,double bankBalance) {
             bankBalance = bankMoney+bankBalance;
             return(bankBalance);
         }
-    //fixa in hela withdraw i en metod om det går
-        public static double withdraw(double bankMoney,double bankBalance) {
+
+        public static double withdrawTransfer(double bankMoney,double bankBalance) {
             bankBalance = bankBalance - bankMoney;
             return(bankBalance);
         }
-    }
-    public static boolean exit(boolean run) {
-        System.out.println("Exiting the bank. Welcome back!");
-        return (false); 
     }
 
     public class WrongInput {
@@ -125,14 +93,22 @@ public class App {
             System.out.println("Wrong input! Please enter a number 1-4");
             input.next();
         }
+
         public static void deposit(Scanner input){
             System.out.println("Wrong input! Please enter the ammount of money you would like to deposit");
             input.next();
         }
+
         public static void withdraw(Scanner input){
             System.out.println("Wrong input! Please enter the ammount of money you would like to withdraw");
             input.next();
         }
+        //fixa ett felmedelande för ta ut/sätta in minus
+    }
+
+    public static boolean exit(boolean run) {
+        System.out.println("Exiting the bank. Welcome back!");
+        return (false); 
     }
     
 
