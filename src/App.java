@@ -23,7 +23,7 @@ public class App {
                         menuOption = input.nextInt();
                 } else {
                     System.out.println(wrongInput());
-                    input.nextLine();
+                    input.next();
                 }
                     switch (menuOption){
                         case 1:
@@ -33,27 +33,32 @@ public class App {
                             System.out.println("Enter the ammount you wish to deposit: ");
                             if (input.hasNextDouble()) {
                                 money = input.nextDouble();
+                                balance = deposit(money, balance);
+                                break;
                             } else {
                                 System.out.println(wrongInput());
-                                input.nextLine();
+                                input.next();
+                                break;
                             }
-                            balance = deposit(money, balance);
-                            break;
+                            
+                            
                         case 3:
                             System.out.println("Enter the ammount you wish to withdraw: ");
                             if (input.hasNextDouble()) {
                                 money = input.nextDouble();
-                            } else {
-                                System.out.println(wrongInput());
-                                input.nextLine();
-                            }
-                                if (money > balance) {
+                                 if (money > balance) {
                                     System.out.println("\nInnsufficient funds to do that transfer, please try again.");
                                     break;
                                 } else {
                                     balance = withdraw(money, balance);
                                     break;
                                 }
+                            } else {
+                                System.out.println(wrongInput());
+                                input.next();
+                                break;
+                            }
+                               
                         case 4:
                             System.out.println("Exit. Welcome back!");
                             run = exit(run);
@@ -66,9 +71,9 @@ public class App {
                             break;
                         }*/
                     
-                    }           
+                    }         
 
-            }
+            }input.close();  
         /* Skapa en meny med 4 val
 
         1 - Se saldo
