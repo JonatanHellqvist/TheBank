@@ -8,7 +8,7 @@ public class App {
         double balance = 0;
         boolean run = true;
         int menuChoice = 0;
-        
+        //ändra några variabelnamn?
         while (run) {
                 
             menuChoice = Menu.menuOption(input);
@@ -34,9 +34,9 @@ public class App {
         public static int menuOption(Scanner input) {
            System.out.println("\nPlease select one of the alternatives:\n\n" +  
                 "1 - Saldo \n" + 
-                "2 - Deposit\n" + 
-                "3 - Withdraw\n" + 
-                "4 - Exit");
+                "2 - Deposit \n" + 
+                "3 - Withdraw \n" + 
+                "4 - Exit ");
             int menuChoice = 0;
             if (input.hasNextInt()) {
                 menuChoice = input.nextInt();
@@ -112,12 +112,12 @@ public class App {
         }
 
         public static void deposit(Scanner input){
-            System.out.println("Wrong input! Please enter the ammount of money you would like to deposit");
+            System.out.println("Wrong input! Please enter the ammount you would like to deposit");
             input.next();
         }
 
         public static void withdraw(Scanner input){
-            System.out.println("Wrong input! Please enter the ammount of money you would like to withdraw");
+            System.out.println("Wrong input! Please enter the ammount you would like to withdraw");
             input.next();
         }
         public static void depositMinus (Scanner input) {
