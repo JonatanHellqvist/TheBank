@@ -15,7 +15,7 @@ public class App {
             
             switch (menuChoice){
                 case 1:
-                    Account.accountBalance(balance);
+                    Account.accountBalance(input,balance);
                     break;
                 case 2:
                     balance = Account.deposit(input, balance);
@@ -56,8 +56,9 @@ public class App {
 
     public class Account {
         
-        public static void accountBalance(double bankBalance) {
+        public static void accountBalance(Scanner input,double bankBalance) {
             System.out.println("\nYour current balance is: " + bankBalance);
+            input.nextLine();
         }
 
         public static double deposit(Scanner input, double bankBalance) {
