@@ -12,6 +12,7 @@ public class App {
         while (run) {
                 
             menuChoice = Menu.menuOption(input);
+            
             switch (menuChoice){
                 case 1:
                     Account.accountBalance(balance);
@@ -27,6 +28,7 @@ public class App {
             }         
         }input.close();  
     }
+
     public class Menu {
 
         public static int menuOption(Scanner input) {
@@ -38,6 +40,9 @@ public class App {
             int menuChoice = 0;
             if (input.hasNextInt()) {
                 menuChoice = input.nextInt();
+                if (menuChoice <= 0 || menuChoice > 4) {
+                    WrongInput.menu(input);
+                } 
             } else {
                 WrongInput.menu(input);
             }
@@ -49,26 +54,30 @@ public class App {
         public static void accountBalance(double bankBalance) {
             System.out.println("\nYour current balance is: " + bankBalance);
         }
-        //fixa så man inte kan sätta in minus
         public static double deposit(Scanner input, double balance) {
             System.out.println("Enter the ammount you wish to deposit: ");
             if (input.hasNextDouble()) {
                 double money = input.nextDouble();
-                balance = depositTransfer(money, balance);
+                if (money > 0){
+                    balance = depositTransfer(money, balance);
+                }else {
+                    WrongInput.depositMinus(input);
+                }
             } else {
                 WrongInput.deposit(input);
             }
             return balance;
         }
-        //fixa så man inte kan ta ut minus
         public static double withdraw(Scanner input, double balance) {
             System.out.println("Enter the ammount you wish to withdraw: ");
             if (input.hasNextDouble()) {
                 double bankMoney = input.nextDouble();
                 if (bankMoney > balance) {
                     System.out.println("\nInnsufficient funds to do that transfer, please try again.");
-                } else {
+                } else if (bankMoney > 0){
                     balance = withdrawTransfer(bankMoney, balance);
+                } else {
+                    WrongInput.withdrawMinus(input);
                 }
             } else {
                 WrongInput.withdraw(input);
@@ -91,7 +100,7 @@ public class App {
     
         public static void menu(Scanner input){
             System.out.println("Wrong input! Please enter a number 1-4");
-            input.next();
+            input.nextLine();
         }
 
         public static void deposit(Scanner input){
@@ -103,7 +112,14 @@ public class App {
             System.out.println("Wrong input! Please enter the ammount of money you would like to withdraw");
             input.next();
         }
-        //fixa ett felmedelande för ta ut/sätta in minus
+        public static void depositMinus (Scanner input) {
+            System.out.println("Wrong input! Please enter a positive number to deposit");
+            input.nextLine();
+        }
+        public static void withdrawMinus (Scanner input) {
+            System.out.println("Wrong input! Please enter a positive number to withdraw");
+            input.nextLine();
+        }
     }
 
     public static boolean exit(boolean run) {
