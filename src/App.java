@@ -24,7 +24,7 @@ public class App {
                     balance = Account.withdraw(input, balance);
                     break;
                 case 4:
-                    run = exit(run);
+                    run = Menu.exit(run);
             }         
         }input.close();  
     }
@@ -48,41 +48,48 @@ public class App {
             }
             return menuChoice;
         }
+        public static boolean exit(boolean run) {
+            System.out.println("Exiting the bank. Welcome back!");
+            return (false);
+        }
     }
+
     public class Account {
         
         public static void accountBalance(double bankBalance) {
             System.out.println("\nYour current balance is: " + bankBalance);
         }
-        public static double deposit(Scanner input, double balance) {
+
+        public static double deposit(Scanner input, double bankBalance) {
             System.out.println("Enter the ammount you wish to deposit: ");
             if (input.hasNextDouble()) {
-                double money = input.nextDouble();
-                if (money > 0){
-                    balance = depositTransfer(money, balance);
+                double bankMoney = input.nextDouble();
+                if (bankMoney > 0){
+                    bankBalance = depositTransfer(bankMoney, bankBalance);
                 }else {
                     WrongInput.depositMinus(input);
                 }
             } else {
                 WrongInput.deposit(input);
             }
-            return balance;
+            return bankBalance;
         }
-        public static double withdraw(Scanner input, double balance) {
+
+        public static double withdraw(Scanner input, double bankBalance) {
             System.out.println("Enter the ammount you wish to withdraw: ");
             if (input.hasNextDouble()) {
                 double bankMoney = input.nextDouble();
-                if (bankMoney > balance) {
+                if (bankMoney > bankBalance) {
                     System.out.println("\nInnsufficient funds to do that transfer, please try again.");
                 } else if (bankMoney > 0){
-                    balance = withdrawTransfer(bankMoney, balance);
+                    bankBalance = withdrawTransfer(bankMoney, bankBalance);
                 } else {
                     WrongInput.withdrawMinus(input);
                 }
             } else {
                 WrongInput.withdraw(input);
             }
-            return balance;
+            return bankBalance;
         }
 
         public static double depositTransfer(double bankMoney,double bankBalance) {
@@ -121,11 +128,4 @@ public class App {
             input.nextLine();
         }
     }
-
-    public static boolean exit(boolean run) {
-        System.out.println("Exiting the bank. Welcome back!");
-        return (false); 
-    }
-    
-
 }
