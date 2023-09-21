@@ -8,7 +8,7 @@ public class App {
         double balance = 0;
         boolean run = true;
         int menuChoice = 0;
-        //ändra några variabelnamn?
+        
         while (run) {
                 
             menuChoice = Menu.menuOption(input);
